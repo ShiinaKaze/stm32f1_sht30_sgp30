@@ -1,6 +1,8 @@
 #include "sgp30.h"
 
 #define SGP30_ADDRESS 0x58
+#define SGP30_ADDRESS_WRITE SGP30_ADDRESS<<1
+#define SGP30_ADDRESS_READ (SGP30_ADDRESS<<1)|0x01
 #define SGP30_ACK 0
 #define SGP30_NACK 1
 /* SGP30 I2C config */
@@ -21,7 +23,7 @@ void SGP30_SInit(void) {
 uint8_t SGP30_SWriteCommand(uint8_t CMD_MSB, uint8_t CMD_LSB) {
 	uint8_t ack;
 	SI2C_Start();
-	SI2C_TransmitByte(SGP30_ADDRESS << 1 | 0x00);
+	SI2C_TransmitByte(SGP30_ADDRESS_WRITE);
 	SI2C_TransmitByte(CMD_MSB);
 	ack = SI2C_TransmitByte(CMD_LSB);
 	SI2C_Stop();
@@ -31,7 +33,7 @@ uint8_t SGP30_SWriteCommand(uint8_t CMD_MSB, uint8_t CMD_LSB) {
 void SGP30_SReadData(SGP30 *sgp30, uint8_t CMD_MSB, uint8_t CMD_LSB) {
 	uint16_t timeout = 1000;
 	SI2C_Start();
-	if ( SI2C_TransmitByte(SGP30_ADDRESS << 1 | 0x00) != SGP30_ACK) {
+	if ( SI2C_TransmitByte(SGP30_ADDRESS_WRITE) != SGP30_ACK) {
 		return;
 	}
 	SI2C_TransmitByte(CMD_MSB);
@@ -39,7 +41,7 @@ void SGP30_SReadData(SGP30 *sgp30, uint8_t CMD_MSB, uint8_t CMD_LSB) {
 
 	// i2c read header, if get nack, retry send
 	SI2C_Start();
-	while (SI2C_TransmitByte((SGP30_ADDRESS << 1) | 0x01)) {
+	while (SI2C_TransmitByte(SGP30_ADDRESS_READ)) {
 		SI2C_Start();
 		timeout--;
 		if (timeout == 0) {
@@ -73,18 +75,19 @@ void SGP30_Init(void) {
 
 void SGP30_WriteCommand(uint8_t CMD_MSB, uint8_t CMD_LSB) {
 	uint8_t data_buffer[2] = { CMD_MSB, CMD_LSB };
-	HAL_I2C_Master_Transmit(&hi2c2, SGP30_ADDRESS << 1, data_buffer, 2, 1000);
+	HAL_I2C_Master_Transmit(&hi2c2, SGP30_ADDRESS_WRITE, data_buffer, 2, 1000);
 }
 
-void SGP30_ReadData(SGP30 *sgp30, uint8_t CMD_MSB, uint8_t CMD_LSB) {
+void SGP30_ReadData(SGP30 *sgp30, uint8_t CMD_MSB, uint8_t CMD_LSB,
+		uint16_t Attempts) {
 	uint8_t data_buffer[6] = { CMD_MSB, CMD_LSB };
-	HAL_I2C_Master_Transmit(&hi2c2, SGP30_ADDRESS << 1, data_buffer, 2, 1000);
-	// Measurement duration is typically 10ms
+	HAL_I2C_Master_Transmit(&hi2c2, SGP30_ADDRESS_WRITE, data_buffer, 2, 1000);
 	Delay_ms(10);
-	if (HAL_I2C_Master_Receive(&hi2c2, (SGP30_ADDRESS << 1) | 0x01,
-			data_buffer, 6, 1000) != HAL_OK) {
-			return;
+	if (HAL_I2C_Master_Receive(&hi2c2, SGP30_ADDRESS_READ, data_buffer, 6, 1000)
+			!= HAL_OK) {
+		memset(data_buffer, 0, 6);
 	}
+
 	sgp30->co2eq = data_buffer[0] << 8;
 	sgp30->co2eq = sgp30->co2eq | data_buffer[1];
 	sgp30->co2eq_crc = data_buffer[2];

@@ -2,6 +2,8 @@
 
 /* SHT30 config */
 #define SHT30_ADDRESS 0x44
+#define SHT30_ADDRESS_WRITE SHT30_ADDRESS<<1
+#define SHT30_ADDRES_READ (SHT30_ADDRESS<<1)|0x01
 #define SHT30_ACK 0
 #define SHT30_NACK 1
 
@@ -57,20 +59,18 @@ void SHT30_Init(void) {
 
 void SHT30_WriteCommand(uint8_t CMD_MSB, uint8_t CMD_LSB) {
 	uint8_t data_buffer[2] = { CMD_MSB, CMD_LSB };
-	HAL_I2C_Master_Transmit(&hi2c2, SHT30_ADDRESS << 1, data_buffer, 2, 1000);
+	HAL_I2C_Master_Transmit(&hi2c2, SHT30_ADDRESS_WRITE, data_buffer, 2, 1000);
 }
 
 void SHT30_ReadData(SHT30 *sht30, uint8_t CMD_MSB, uint8_t CMD_LSB,
 		uint16_t Attempts) {
 	uint8_t data_buffer[6] = { CMD_MSB, CMD_LSB };
-	HAL_I2C_Master_Transmit(&hi2c2, SHT30_ADDRESS << 1, data_buffer, 2, 1000);
-	while (HAL_I2C_Master_Receive(&hi2c2, (SHT30_ADDRESS << 1) | 0x01,
-			data_buffer, 6, 1000) != HAL_OK) {
-		Attempts--;
-		if (Attempts == 0) {
-			return;
-		}
+	HAL_I2C_Master_Transmit(&hi2c2, SHT30_ADDRESS_WRITE, data_buffer, 2, 1000);
+	if (HAL_I2C_Master_Receive(&hi2c2, SHT30_ADDRES_READ, data_buffer, 6, 1000)
+			!= HAL_OK) {
+		memset(data_buffer, 0, 6);
 	}
+
 	sht30->temp_raw = data_buffer[0] << 8;
 	sht30->temp_raw = sht30->temp_raw | data_buffer[1];
 	sht30->temp_crc = data_buffer[2];

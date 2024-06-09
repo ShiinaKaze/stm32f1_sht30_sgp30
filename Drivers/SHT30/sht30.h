@@ -5,6 +5,7 @@
 #include "si2c.h"
 #include "main.h"
 #include "systick.h"
+#include "string.h"
 
 typedef struct sht30 {
 	uint16_t temp_raw;
