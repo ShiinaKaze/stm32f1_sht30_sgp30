@@ -46,10 +46,10 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F1xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F1xx/Include"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
-									<listOptionValue builtIn="false" value="../Drivers/SI2C"/>
-									<listOptionValue builtIn="false" value="../Drivers/OLED"/>
-									<listOptionValue builtIn="false" value="../Drivers/SHT30"/>
-									<listOptionValue builtIn="false" value="../Drivers/SGP30"/>
+									<listOptionValue builtIn="false" value="../Drivers/DSP/Components/oled"/>
+									<listOptionValue builtIn="false" value="../Drivers/DSP/Components/sht30"/>
+									<listOptionValue builtIn="false" value="../Drivers/DSP/Components/sgp30"/>
+									<listOptionValue builtIn="false" value="../Drivers/DSP/Common/sw_i2c"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1252931008" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>

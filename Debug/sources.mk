@@ -24,9 +24,9 @@ C_DEPS :=
 SUBDIRS := \
 Core/Src \
 Core/Startup \
-Drivers/OLED \
-Drivers/SGP30 \
-Drivers/SHT30 \
-Drivers/SI2C \
+Drivers/DSP/Common/sw_i2c \
+Drivers/DSP/Components/oled \
+Drivers/DSP/Components/sgp30 \
+Drivers/DSP/Components/sht30 \
 Drivers/STM32F1xx_HAL_Driver/Src \
 

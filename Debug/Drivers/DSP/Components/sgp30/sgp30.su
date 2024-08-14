@@ -1,0 +1,5 @@
+../Drivers/DSP/Components/sgp30/sgp30.c:7:6:SGP30_Init	8	static
+../Drivers/DSP/Components/sgp30/sgp30.c:12:9:SGP30_WriteCommand	24	static
+../Drivers/DSP/Components/sgp30/sgp30.c:23:6:SGP30_Measure_IAQ	32	static
+../Drivers/DSP/Components/sgp30/sgp30.c:58:6:SGP30_WriteData	24	static
+../Drivers/DSP/Components/sgp30/sgp30.c:70:6:SGP30_IAQ_Init	8	static

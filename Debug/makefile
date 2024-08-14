@@ -10,10 +10,10 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
--include Drivers/SI2C/subdir.mk
--include Drivers/SHT30/subdir.mk
--include Drivers/SGP30/subdir.mk
--include Drivers/OLED/subdir.mk
+-include Drivers/DSP/Components/sht30/subdir.mk
+-include Drivers/DSP/Components/sgp30/subdir.mk
+-include Drivers/DSP/Components/oled/subdir.mk
+-include Drivers/DSP/Common/sw_i2c/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk

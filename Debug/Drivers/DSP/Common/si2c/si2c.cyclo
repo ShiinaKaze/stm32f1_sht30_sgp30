@@ -1,0 +1,4 @@
+../Drivers/DSP/Common/si2c/si2c.c:23:6:SI2C_Start	1
+../Drivers/DSP/Common/si2c/si2c.c:45:6:SI2C_Stop	1
+../Drivers/DSP/Common/si2c/si2c.c:66:9:SI2C_TransmitByte	2
+../Drivers/DSP/Common/si2c/si2c.c:97:9:SI2C_ReceiveByte	3
